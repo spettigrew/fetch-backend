@@ -5,7 +5,7 @@ exports.up = async function (knex) {
       table.integer('user_id').notNullable()
       table.string('payer_name').notNullable()
       table.integer('points')
-      table.datetime('timestamp')
+      table.datetime('timestamp').notNullable().defaultTo(new Date())
   })
 };
 
