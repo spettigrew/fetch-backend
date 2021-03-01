@@ -18,8 +18,11 @@ router.get("/balances", async (req, res, next) => {
 })
 
 router.post("/", async (req, res, next) => {
-    try {
-        return res.json(await Transactions.createTransaction(req.body))
+    try { 
+        const result = await Transactions.createTransaction(req.body)
+        if (!result.error) {
+            res.statusCode(400).json({message: result.error})
+        }
     }
     catch (err) {
         next(err)
@@ -41,8 +44,10 @@ router.put("/spend-points", async (req, res, next) => {
  try {
     const { points } = req.body
     const result = await Transactions.spendPoints(points)
-    if (result) {
+    if (!result.error) {
         res.status(200).json(result)
+    } else {
+        res.status(200).json({message: result.error})
     }
 
     } catch (err) {
